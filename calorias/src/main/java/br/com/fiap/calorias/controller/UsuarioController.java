@@ -1,12 +1,14 @@
 package br.com.fiap.calorias.controller;
 
 
+import br.com.fiap.calorias.dto.UsuarioAtualizarDto;
+import br.com.fiap.calorias.dto.UsuarioCadastroDto;
+import br.com.fiap.calorias.dto.UsuarioExibirDto;
 import br.com.fiap.calorias.model.Usuario;
 import br.com.fiap.calorias.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.metrics.jfr.FlightRecorderApplicationStartup;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Repository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,19 +22,23 @@ public class UsuarioController {
 
     @PostMapping("/usuarios")
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario salvar(@RequestBody Usuario usuario){
-        return service.salvar(usuario);
+    public UsuarioExibirDto salvar(@RequestBody UsuarioCadastroDto usuarioCadastroDto){
+        return service.salvar(usuarioCadastroDto);
     }
 
     @GetMapping("/usuarios/id/{usuarioId}")
     @ResponseStatus(HttpStatus.OK)
-    public Usuario buscarPorId(@PathVariable Long usuarioId){
-        return service.buscarUsuarioPeloId(usuarioId);
+    public ResponseEntity<UsuarioExibirDto> buscarPorId(@PathVariable Long usuarioId){
+        try{
+            return ResponseEntity.ok(service.buscarUsuarioPeloId(usuarioId));
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/usuarios")
     @ResponseStatus(HttpStatus.OK)
-    public List<Usuario> listarUsuarios(){
+    public List<UsuarioExibirDto> listarUsuarios(){
         return service.listarUsuarios();
     }
 
@@ -44,8 +50,8 @@ public class UsuarioController {
 
     @PutMapping("/usuarios")
     @ResponseStatus(HttpStatus.OK)
-    public Usuario atualizar(@RequestBody Usuario usuario){
-        return service.atualizar(usuario);
+    public UsuarioExibirDto atualizar(@RequestBody UsuarioAtualizarDto usuarioAtualizarDto){
+        return service.atualizar(usuarioAtualizarDto);
     }
 
     @GetMapping("/usuarios/nome/{nome}")

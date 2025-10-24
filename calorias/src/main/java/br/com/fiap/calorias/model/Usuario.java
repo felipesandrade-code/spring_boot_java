@@ -3,9 +3,6 @@ package br.com.fiap.calorias.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Objects;
-
-
 @Entity
 @Table(name = "tbl_usuarios")
 @Getter
