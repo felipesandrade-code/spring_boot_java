@@ -3,8 +3,12 @@ package br.com.fiap.calorias.controller;
 import br.com.fiap.calorias.dto.AlimentoAtualizarDto;
 import br.com.fiap.calorias.dto.AlimentoCadastroDto;
 import br.com.fiap.calorias.dto.AlimentoExibirDto;
+import br.com.fiap.calorias.exception.AlimentoNaoEncontradoException;
+import br.com.fiap.calorias.repository.AlimentoRepository;
 import br.com.fiap.calorias.service.AlimentoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +21,23 @@ public class AlimentoController {
 
     @Autowired
     private AlimentoService alimentoService;
+    @Autowired
+    private HttpMessageConverters messageConverters;
 
     @PostMapping("/salvar")
     @ResponseStatus(HttpStatus.CREATED)
-    public AlimentoExibirDto salvar(@RequestBody AlimentoCadastroDto alimentoCadastroDto){
+    public AlimentoExibirDto salvar(@RequestBody @Valid AlimentoCadastroDto alimentoCadastroDto){
         return alimentoService.salvarAlimento(alimentoCadastroDto);
     }
 
     @DeleteMapping("/excluir/{alimentoId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long alimentoId){
-        alimentoService.excluir(alimentoId);
+    public ResponseEntity<String> excluir(@PathVariable Long alimentoId){
+        try {
+            alimentoService.excluir(alimentoId);
+            return ResponseEntity.ok("Alimento excluído com sucesso!");
+        } catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/atualizar")

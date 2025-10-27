@@ -4,12 +4,15 @@ package br.com.fiap.calorias.controller;
 import br.com.fiap.calorias.dto.UsuarioAtualizarDto;
 import br.com.fiap.calorias.dto.UsuarioCadastroDto;
 import br.com.fiap.calorias.dto.UsuarioExibirDto;
+import br.com.fiap.calorias.exception.UsuarioNaoEncontradoException;
 import br.com.fiap.calorias.model.Usuario;
 import br.com.fiap.calorias.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class UsuarioController {
 
     @PostMapping("/usuarios")
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioExibirDto salvar(@RequestBody UsuarioCadastroDto usuarioCadastroDto){
+    public UsuarioExibirDto salvar(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
         return service.salvar(usuarioCadastroDto);
     }
 
@@ -31,7 +34,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioExibirDto> buscarPorId(@PathVariable Long usuarioId){
         try{
             return ResponseEntity.ok(service.buscarUsuarioPeloId(usuarioId));
-        }catch (Exception e){
+        }catch (UsuarioNaoEncontradoException e){
             return ResponseEntity.notFound().build();
         }
     }

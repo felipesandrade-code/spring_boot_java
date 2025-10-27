@@ -3,6 +3,8 @@ package br.com.fiap.calorias.service;
 import br.com.fiap.calorias.dto.AlimentoAtualizarDto;
 import br.com.fiap.calorias.dto.AlimentoCadastroDto;
 import br.com.fiap.calorias.dto.AlimentoExibirDto;
+import br.com.fiap.calorias.exception.AlimentoNaoEncontradoException;
+import br.com.fiap.calorias.exception.UsuarioNaoEncontradoException;
 import br.com.fiap.calorias.model.Alimento;
 import br.com.fiap.calorias.repository.AlimentoRepository;
 import org.springframework.beans.BeanUtils;
@@ -58,7 +60,7 @@ public class AlimentoService {
             );
             return new AlimentoExibirDto(alimentoRepository.save(alimento));
         } else {
-            throw new RuntimeException("Alimento não encontrado!");
+            throw new AlimentoNaoEncontradoException("Alimento não encontrado!");
         }
     }
 
@@ -67,7 +69,7 @@ public class AlimentoService {
         if (alimentoOptional.isPresent()){
             alimentoRepository.delete(alimentoOptional.get());
         } else{
-            throw new RuntimeException("Não possui nenhum alimento com esse Id para você excluir!");
+            throw new AlimentoNaoEncontradoException("Não possui nenhum alimento com esse Id para você excluir!");
         }
     }
 
@@ -76,7 +78,7 @@ public class AlimentoService {
         if (alimentoOptional.isPresent()){
             return new AlimentoExibirDto(alimentoOptional.get());
         } else{
-            throw new RuntimeException("Não há nenhum alimento desse Id");
+            throw new AlimentoNaoEncontradoException("Nenhum alimento encontrado!");
         }
     }
 
@@ -85,7 +87,7 @@ public class AlimentoService {
         if (alimentoOptional.isPresent()){
             return new AlimentoExibirDto(alimentoOptional.get());
         }else{
-            throw new RuntimeException("Não possui nenhum alimento deste nome em nosso banco de dados.");
+            throw new AlimentoNaoEncontradoException("Não possui nenhum alimento deste nome em nosso banco de dados.");
         }
     }
 
