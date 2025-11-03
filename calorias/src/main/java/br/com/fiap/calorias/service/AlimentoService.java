@@ -104,4 +104,31 @@ public class AlimentoService {
         return calorias;
     }
 
+    public List<AlimentoExibirDto> listByTotalCalories (double minimal, double maximal){
+        return alimentoRepository
+                .listPerTotalCalories(minimal, maximal)
+                .stream()
+                .map(AlimentoExibirDto::new)
+                .toList();
+    }
+
+    public AlimentoExibirDto findByQuantidadeDeProteinas (Double quantidadeProteina){
+        Optional<Alimento> alimentoOptional = alimentoRepository.findByQuantidadeProteina(quantidadeProteina);
+
+        if (alimentoOptional.isPresent()){
+            return new AlimentoExibirDto(alimentoOptional.get());
+        }else{
+            throw new AlimentoNaoEncontradoException("Alimento não encontrado!");
+        }
+    }
+
+    public AlimentoExibirDto findByQuantidadeDeCarboidratosBetween (double quantidadeCarboidratoAfter, double quantidadeCarboidratoBefore){
+        Optional<Alimento> alimentoOptional = alimentoRepository.findByQuantidadeCarboidratoBetween(quantidadeCarboidratoAfter, quantidadeCarboidratoBefore);
+
+        if (alimentoOptional.isPresent()){
+            return new AlimentoExibirDto(alimentoOptional.get());
+        } else {
+            throw new AlimentoNaoEncontradoException("Alimento não encontrado");
+        }
+    }
 }

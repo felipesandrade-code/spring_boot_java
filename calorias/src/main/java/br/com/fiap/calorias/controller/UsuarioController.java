@@ -25,47 +25,47 @@ public class UsuarioController {
 
     @PostMapping("/usuarios")
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioExibirDto salvar(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
+    public UsuarioExibirDto salvar(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto) {
         return service.salvar(usuarioCadastroDto);
     }
 
     @GetMapping("/usuarios/id/{usuarioId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UsuarioExibirDto> buscarPorId(@PathVariable Long usuarioId){
-        try{
+    public ResponseEntity<UsuarioExibirDto> buscarPorId(@PathVariable Long usuarioId) {
+        try {
             return ResponseEntity.ok(service.buscarUsuarioPeloId(usuarioId));
-        }catch (UsuarioNaoEncontradoException e){
+        } catch (UsuarioNaoEncontradoException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/usuarios")
     @ResponseStatus(HttpStatus.OK)
-    public List<UsuarioExibirDto> listarUsuarios(){
+    public List<UsuarioExibirDto> listarUsuarios() {
         return service.listarUsuarios();
     }
 
     @DeleteMapping("/usuarios/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id){
-       service.excluir(id);
+    public void excluir(@PathVariable Long id) {
+        service.excluir(id);
     }
 
     @PutMapping("/usuarios")
     @ResponseStatus(HttpStatus.OK)
-    public UsuarioExibirDto atualizar(@RequestBody UsuarioAtualizarDto usuarioAtualizarDto){
+    public UsuarioExibirDto atualizar(@RequestBody UsuarioAtualizarDto usuarioAtualizarDto) {
         return service.atualizar(usuarioAtualizarDto);
     }
 
     @GetMapping("/usuarios/nome/{nome}")
     @ResponseStatus(HttpStatus.OK)
-    public Usuario buscarUsuarioPeloNome(@PathVariable String nome){
+    public Usuario buscarUsuarioPeloNome(@PathVariable String nome) {
         return service.buscarPeloNome(nome);
     }
 
-    @GetMapping("/usuarios/email/{email}")
+    @GetMapping(value = "/usuarios/email", params ="email")
     @ResponseStatus(HttpStatus.OK)
-    public Usuario buscarUsuarioPeloEmail(@PathVariable String email){
+    public Usuario buscarUsuarioPeloEmail(@RequestParam String email) {
         return service.buscarPeloEmail(email);
     }
 

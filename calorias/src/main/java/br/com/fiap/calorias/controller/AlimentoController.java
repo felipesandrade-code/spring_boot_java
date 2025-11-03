@@ -9,6 +9,7 @@ import br.com.fiap.calorias.service.AlimentoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,6 +73,31 @@ public class AlimentoController {
     public ResponseEntity<AlimentoExibirDto> buscarAlimentoPeloNome(@PathVariable String nome){
         try{
             return ResponseEntity.ok(alimentoService.buscarAlimentoPeloNome(nome));
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "/listarCalories", params = {"minimal", "maximal"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<AlimentoExibirDto>listByTotalCalories(@RequestParam("minimal") double minimal, @RequestParam("maximal") double maximal){
+            return alimentoService.listByTotalCalories(minimal, maximal);
+    }
+
+    @GetMapping(value = "/buscar/proteina", params = "quantidadeProteina")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<AlimentoExibirDto> findByProteina(@RequestParam Double quantidadeProteina){
+        try {
+            return ResponseEntity.ok(alimentoService.findByQuantidadeDeProteinas(quantidadeProteina));
+        }catch (Exception e){
+           return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "/buscar/carboidrato", params = {"quantidadeCarboidratoAfter", "quantidadeCarboidratoBefore"})
+    public ResponseEntity<AlimentoExibirDto> findByCarbsBetween(@RequestParam double quantidadeCarboidratoAfter, @RequestParam double quantidadeCarboidratoBefore){
+        try{
+            return ResponseEntity.ok(alimentoService.findByQuantidadeDeCarboidratosBetween(quantidadeCarboidratoAfter,quantidadeCarboidratoBefore));
         }catch (Exception e){
             return ResponseEntity.notFound().build();
         }

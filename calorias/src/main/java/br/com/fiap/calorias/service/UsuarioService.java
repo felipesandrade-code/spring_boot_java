@@ -81,4 +81,5 @@ public class UsuarioService {
         BeanUtils.copyProperties(usuarioAtualizarDto, usuario);
         return new UsuarioExibirDto(usuarioRepository.save(usuario));
     }
+
 }
