@@ -9,6 +9,8 @@ import br.com.fiap.calorias.model.Usuario;
 import br.com.fiap.calorias.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +69,12 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.OK)
     public Usuario buscarUsuarioPeloEmail(@RequestParam String email) {
         return service.buscarPeloEmail(email);
+    }
+
+    @GetMapping("/usuarios/paginacao")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<UsuarioExibirDto> listAll(Pageable pages){
+        return service.listAll(pages);
     }
 
 }

@@ -8,6 +8,8 @@ import br.com.fiap.calorias.model.Usuario;
 import br.com.fiap.calorias.repository.UsuarioRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -74,6 +76,12 @@ public class UsuarioService {
         }else{
             throw new RuntimeException("Contato não encontrado!");
         }
+    }
+
+    public Page<UsuarioExibirDto> listAll (Pageable pages){
+        return usuarioRepository
+                .findAll(pages)
+                .map(UsuarioExibirDto::new);
     }
 
     public UsuarioExibirDto atualizar(UsuarioAtualizarDto usuarioAtualizarDto){
