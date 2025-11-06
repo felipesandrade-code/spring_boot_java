@@ -26,6 +26,4 @@ public class ApplicationExceptionHandler {
         return mapaDeErro;
     }
 
-
-
 }

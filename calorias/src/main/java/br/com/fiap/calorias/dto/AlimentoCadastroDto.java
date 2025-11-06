@@ -2,7 +2,6 @@ package br.com.fiap.calorias.dto;
 
 import br.com.fiap.calorias.model.Alimento;
 import jakarta.validation.constraints.*;
-import org.aspectj.bridge.Message;
 
 public record AlimentoCadastroDto(
         Long alimentoId,
