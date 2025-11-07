@@ -30,14 +30,16 @@ public class UsuarioService {
 
 
     public UsuarioExibirDto salvar(UsuarioCadastroDto usuarioCadastroDto){
+
         String senhaCriptografada = new BCryptPasswordEncoder().encode(usuarioCadastroDto.senha());
 
         Usuario usuario = new Usuario();
         BeanUtils.copyProperties(usuarioCadastroDto, usuario);
         usuario.setSenha(senhaCriptografada);
 
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
-        return new UsuarioExibirDto(usuarioRepository.save(usuario));
+        return new UsuarioExibirDto(usuarioRepository.save(usuarioSalvo));
     }
 
 //    public Usuario buscarPeloEmail(String email){

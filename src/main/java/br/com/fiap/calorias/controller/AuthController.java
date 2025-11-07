@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-
-    private final UsuarioService usuarioService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -40,9 +40,11 @@ public class AuthController {
 
         @PostMapping("/register")
         @ResponseStatus(HttpStatus.CREATED)
-        public ResponseEntity register(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
+        public UsuarioExibirDto register(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
+
             UsuarioExibirDto usuarioExibirDto = null;
             usuarioExibirDto = usuarioService.salvar(usuarioCadastroDto);
-            return ResponseEntity.ok(usuarioExibirDto);
+
+            return usuarioExibirDto;
         }
 }
