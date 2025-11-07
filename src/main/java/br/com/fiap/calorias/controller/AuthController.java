@@ -1,5 +1,6 @@
 package br.com.fiap.calorias.controller;
 
+import br.com.fiap.calorias.dto.LoginDto;
 import br.com.fiap.calorias.dto.UsuarioCadastroDto;
 import br.com.fiap.calorias.dto.UsuarioExibirDto;
 import br.com.fiap.calorias.model.Usuario;
@@ -26,17 +27,21 @@ public class AuthController {
 
     private final UsuarioService usuarioService;
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthController(UsuarioService usuarioService) {
+    public AuthController(UsuarioService usuarioService, AuthenticationManager authenticationManager) {
         this.usuarioService = usuarioService;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/login")
-        public ResponseEntity login(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
-            UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(usuarioCadastroDto.email(), usuarioCadastroDto.senha());
+        public ResponseEntity login(@RequestBody @Valid LoginDto loginDto){
+            UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(
+                    loginDto.email(),
+                    loginDto.senha()
+            );
 
-            Authentication authentication = authenticationManager.authenticate(usernamePassword);
+            Authentication auth = authenticationManager.authenticate(usernamePassword);
 
             return ResponseEntity.ok().build();
         }

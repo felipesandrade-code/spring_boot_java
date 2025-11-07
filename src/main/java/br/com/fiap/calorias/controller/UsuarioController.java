@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class UsuarioController {
+public class  UsuarioController {
 
     @Autowired
     private UsuarioService service;
