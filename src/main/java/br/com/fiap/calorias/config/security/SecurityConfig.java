@@ -19,23 +19,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity httpSecurity) throws Exception{
-        return httpSecurity.csrf(csrf -> csrf.disable())
-                .sessionManagement(
-                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        return httpSecurity
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/alimentos").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/usuarios")
-                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios").hasRole("ADMIN")
                         .anyRequest()
-                        .authenticated())
+                        .authenticated()
+                )
                 .build();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception{
+            AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
 
