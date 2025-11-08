@@ -1,6 +1,8 @@
 package br.com.fiap.calorias.controller;
 
+import br.com.fiap.calorias.config.security.TokenService;
 import br.com.fiap.calorias.dto.LoginDto;
+import br.com.fiap.calorias.dto.TokenDTO;
 import br.com.fiap.calorias.dto.UsuarioCadastroDto;
 import br.com.fiap.calorias.dto.UsuarioExibirDto;
 import br.com.fiap.calorias.model.Usuario;
@@ -24,15 +26,14 @@ import java.util.Optional;
 @RequestMapping("/auth")
 public class AuthController {
 
+    @Autowired
+    private UsuarioService usuarioService;
 
-    private final UsuarioService usuarioService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    private final AuthenticationManager authenticationManager;
-
-    public AuthController(UsuarioService usuarioService, AuthenticationManager authenticationManager) {
-        this.usuarioService = usuarioService;
-        this.authenticationManager = authenticationManager;
-    }
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/login")
         public ResponseEntity login(@RequestBody @Valid LoginDto loginDto){
@@ -43,7 +44,9 @@ public class AuthController {
 
             Authentication auth = authenticationManager.authenticate(usernamePassword);
 
-            return ResponseEntity.ok().build();
+            String token = tokenService.gerarToken((Usuario) auth.getPrincipal());
+
+            return ResponseEntity.ok(new TokenDTO(token));
         }
 
         @PostMapping("/register")

@@ -24,7 +24,11 @@ public class TokenService {
     public String gerarToken(Usuario usuario){
         try {
             Algorithm algorithm = Algorithm.HMAC256(palavraSecreta);
-            String token = JWT.create().withIssuer("usuario").withSubject(usuario.getEmail()).withExpiresAt(gerarDataDeExpiracao()).sign(algorithm);
+            String token = JWT.create()
+                    .withIssuer("usuario")
+                    .withSubject(usuario.getEmail())
+                    .withExpiresAt(gerarDataDeExpiracao())
+                    .sign(algorithm);
            return token;
         } catch (JWTCreationException jwtCreationException){
             throw new RuntimeException("Não foi possível gerar o token!");

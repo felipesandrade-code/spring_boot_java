@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    @Query("SELECT u.email from Usuario u WHERE u.email = :email")
     UserDetails findByEmail(@Param("email") String email);
 
     @Query("select u.nome from Usuario u where u.nome = :nome")
